@@ -28,7 +28,7 @@ function OfflineCheckout() {
               alt="Offline-first checkout screen with product search, cart, and receipt controls"
               className="aspect-[16/10] w-full rounded-[22px] object-cover"
             />
-            <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
+            <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 sm:gap-3">
               {[
                 { label: "Search", value: "0.1s", icon: Gauge },
                 { label: "Database", value: "Local", icon: Database },

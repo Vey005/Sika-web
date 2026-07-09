@@ -53,7 +53,7 @@ function InventorySection() {
               alt="Inventory dashboard with stock levels, low stock alerts, and product movement"
               className="aspect-[16/10] w-full rounded-[22px] object-cover"
             />
-            <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
+            <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 sm:gap-3">
               {[
                 { label: "In Stock", value: "1,532", icon: PackageCheck, className: "text-sika-success bg-sika-successSoft" },
                 { label: "Low Stock", value: "254", icon: AlertTriangle, className: "text-sika-danger bg-sika-dangerSoft" },
