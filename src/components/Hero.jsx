@@ -374,7 +374,7 @@ function Hero() {
               <img
                 src={heroPos}
                 alt="Sika POS checkout screen showing product cards, cart totals, and cashier controls"
-                className="aspect-[16/10] w-full rounded-[22px] object-cover shadow-soft"
+                className="w-full h-auto object-contain rounded-[22px] shadow-soft"
               />
               <div className="absolute left-5 top-5 hidden rounded-full border border-sika-success/20 bg-white/94 px-4 py-2 text-sm font-black text-sika-text shadow-soft backdrop-blur md:flex md:items-center md:gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-sika-success" />
