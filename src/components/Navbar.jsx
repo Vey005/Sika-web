@@ -14,27 +14,12 @@ const navItems = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const { downloadUrl, filename } = useLatestDownloadUrl();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 12) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <nav className={`fixed inset-x-4 top-4 z-50 mx-auto max-w-7xl px-5 transition-all duration-300 md:px-8 ${
       open
         ? "rounded-3xl border border-sika-border/70 bg-white/95 shadow-premium backdrop-blur-lg"
-        : scrolled
-        ? "rounded-3xl border border-sika-border/35 bg-white/10 shadow-premium backdrop-blur-md md:rounded-full"
         : "rounded-3xl border border-transparent bg-transparent shadow-none backdrop-blur-none"
     }`}>
       <div className="flex h-16 items-center justify-between gap-6">
