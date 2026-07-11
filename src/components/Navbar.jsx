@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useLatestDownloadUrl } from "../hooks/useLatestDownloadUrl";
 import logoImg from "../assets/images/logo.png";
@@ -14,10 +14,27 @@ const navItems = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { downloadUrl, filename } = useLatestDownloadUrl();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 12) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed inset-x-4 top-4 z-50 mx-auto max-w-7xl rounded-3xl border border-sika-border/70 bg-white/80 px-5 shadow-premium backdrop-blur-lg transition-all duration-300 md:rounded-full md:px-8">
+    <nav className={`fixed inset-x-4 top-4 z-50 mx-auto max-w-7xl px-5 transition-all duration-300 md:px-8 ${
+      (scrolled || open)
+        ? "rounded-3xl border border-sika-border/70 bg-white/85 shadow-premium backdrop-blur-lg md:rounded-full"
+        : "rounded-3xl border border-transparent bg-transparent shadow-none backdrop-blur-none"
+    }`}>
       <div className="flex h-16 items-center justify-between gap-6">
         {/* Brand Logo */}
         <a href="#home" className="flex shrink-0 items-center gap-3 focus-ring">

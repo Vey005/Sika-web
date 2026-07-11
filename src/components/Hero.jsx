@@ -290,7 +290,7 @@ function Hero() {
   return (
     <section id="home" className="relative overflow-hidden pb-16 text-sika-text">
       {/* 1. Full-bleed showblock for animation at the top */}
-      <div className="relative w-full h-[460px] md:h-[520px] lg:h-[580px] pt-20 border-b border-sika-border/30 bg-white/40">
+      <div className="relative w-full h-[460px] md:h-[520px] lg:h-[580px] pt-20 border-b border-sika-border/30 bg-transparent">
         <HeroFlowAnimation />
       </div>
 
