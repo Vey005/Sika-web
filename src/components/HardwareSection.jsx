@@ -36,8 +36,8 @@ function HardwareSection() {
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.55 }}
           >
-            <p className="text-sm font-black uppercase text-sika-goldDark">Hardware integration</p>
-            <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
+            <p className="editorial-kicker">08 / Counter hardware</p>
+            <h2 className="mt-5 text-[34px] font-black leading-[0.96] text-sika-text md:text-[62px]">
               Connect the Tools Your Shop Already Uses
             </h2>
           </motion.div>
@@ -46,12 +46,12 @@ function HardwareSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="overflow-hidden rounded-[28px] border border-sika-border bg-sika-cream p-2 shadow-soft"
+            className="overflow-hidden rounded-[30px] border border-sika-text/10 bg-[#070806] p-2 shadow-premium"
           >
             <img
               src={cashierCounter}
               alt="Point-of-sale hardware counter with barcode scanner, receipt printer, and POS screen"
-              className="h-64 w-full rounded-[22px] object-cover"
+              className="w-full h-auto object-contain rounded-[24px]"
             />
           </motion.div>
         </div>
@@ -64,7 +64,7 @@ function HardwareSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, delay: index * 0.05 }}
-              className="rounded-lg border border-sika-border bg-sika-bg p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
+              className="paper-panel rounded-[24px] p-6 transition hover:-translate-y-1 hover:shadow-soft"
             >
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-white text-sika-gold shadow-sm">
                 <Icon size={24} />

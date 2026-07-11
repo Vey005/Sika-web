@@ -3,17 +3,14 @@ import { BarChart3, Building2, Cloud, MapPin, Smartphone } from "lucide-react";
 
 const features = [
   "Consolidated owner dashboard",
-  "Multi-store sales comparison",
-  "Product performance tracking",
-  "Cash flow visibility",
-  "Remote role permissions",
-  "Mobile-ready owner portal",
-  "iOS and Android app support through Capacitor",
+  "Multi-store comparison reports",
+  "Real-time cash flow tracker",
+  "Remote staff role permissions",
 ];
 
 function CloudPortal() {
   return (
-    <section id="cloud" className="section-padding bg-sika-bg">
+    <section id="cloud" className="section-padding bg-[#f7f1e4]">
       <div className="container-page grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -21,16 +18,16 @@ function CloudPortal() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Cloud portal and multi-store</p>
-          <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
+          <p className="editorial-kicker">07 / Owner portal</p>
+          <h2 className="mt-5 text-[34px] font-black leading-[0.96] text-sika-text md:text-[62px]">
             Monitor Every Branch from One Owner Dashboard
           </h2>
           <p className="mt-5 text-lg leading-8 text-sika-textSoft">
-            For growing businesses, Sika POS connects shop activity to a cloud portal where owners can compare branches, view sales, monitor stock, and manage permissions remotely.
+            Connect branches to a single cloud portal. Compare sales, monitor stock movements, and manage permissions remotely.
           </p>
           <div className="mt-7 grid gap-3">
             {features.map((feature) => (
-              <div key={feature} className="flex items-center gap-3 rounded-lg border border-sika-border bg-white p-3 shadow-sm">
+              <div key={feature} className="flex items-center gap-3 border-b border-sika-text/10 py-3">
                 <Cloud className="shrink-0 text-sika-gold" size={18} />
                 <span className="font-bold text-sika-textSoft">{feature}</span>
               </div>
@@ -43,7 +40,7 @@ function CloudPortal() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.6 }}
-          className="rounded-lg border border-sika-border bg-white p-5 shadow-premium"
+          className="rounded-[30px] border border-sika-text/10 bg-white p-5 shadow-premium"
         >
           <div className="mb-5 flex items-center justify-between">
             <div>
@@ -60,7 +57,7 @@ function CloudPortal() {
               { name: "East Legon Branch", place: "East Legon", sales: "GH₵ 5,220", status: "Online" },
               { name: "Achimota Branch", place: "Accra", sales: "GH₵ 3,610", status: "Syncing" },
             ].map((branch) => (
-              <article key={branch.name} className="rounded-lg border border-sika-border bg-sika-bg p-4">
+              <article key={branch.name} className="rounded-[22px] border border-sika-border bg-sika-bg p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex gap-3">
                     <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-sika-gold shadow-sm">

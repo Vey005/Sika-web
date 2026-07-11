@@ -7,7 +7,7 @@ function FAQ() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className="section-padding bg-sika-bg">
+    <section className="section-padding bg-[#f7f1e4]">
       <div className="container-page grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -15,8 +15,8 @@ function FAQ() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">FAQ</p>
-          <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
+          <p className="editorial-kicker">11 / Questions</p>
+          <h2 className="mt-5 text-[34px] font-black leading-[0.96] text-sika-text md:text-[62px]">
             Common questions before your demo
           </h2>
           <p className="mt-5 text-lg leading-8 text-sika-textSoft">
@@ -34,7 +34,7 @@ function FAQ() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25 }}
                 transition={{ duration: 0.35, delay: index * 0.03 }}
-                className="rounded-lg border border-sika-border bg-white shadow-sm"
+                className="rounded-[22px] border border-sika-text/10 bg-white shadow-sm"
               >
                 <button
                   type="button"

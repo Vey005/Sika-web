@@ -24,13 +24,15 @@ const businesses = [
 
 function BusinessTypes() {
   return (
-    <section className="border-y border-sika-border bg-white">
-      <div className="container-page grid gap-6 py-8 lg:grid-cols-[1fr_320px] lg:items-center">
+    <section className="section-rule bg-[#f7f1e4]">
+      <div className="container-page grid gap-8 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <div>
-          <p className="mb-4 text-sm font-black uppercase text-sika-goldDark">
-            Built for everyday Ghanaian businesses
-          </p>
-          <div className="flex flex-wrap gap-2.5">
+          <p className="editorial-kicker">Where Sika operates</p>
+          <h2 className="mt-5 max-w-2xl text-4xl font-black leading-none text-sika-text md:text-6xl">
+            Built for counters, shelves, queues, and branches.
+          </h2>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
             {businesses.map(({ label, icon: Icon }, index) => (
               <motion.span
                 key={label}
@@ -38,22 +40,24 @@ function BusinessTypes() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: index * 0.03 }}
-                className="inline-flex items-center gap-2 rounded-full border border-sika-border bg-sika-bg px-3.5 py-2 text-sm font-bold text-sika-textSoft"
+              className="group grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-sika-text/12 py-3 text-sm font-black uppercase text-sika-text transition hover:border-sika-gold"
               >
-                <Icon size={16} className="text-sika-gold" />
+              <span className="text-sika-gold">{String(index + 1).padStart(2, "0")}</span>
+              <Icon size={18} className="text-sika-muted transition group-hover:text-sika-gold" />
                 {label}
               </motion.span>
             ))}
-          </div>
         </div>
-        <div className="relative hidden overflow-hidden rounded-[28px] border border-sika-border bg-sika-cream p-2 shadow-soft lg:block">
+      </div>
+      <div className="container-page pb-12">
+        <div className="relative overflow-hidden rounded-[30px] border border-sika-text/10 bg-white p-2 shadow-premium">
           <img
             src={cashierCounter}
             alt="Shop counter scene with a Sika POS terminal and receipt printer"
-            className="h-40 w-full rounded-[22px] object-cover"
+            className="w-full h-auto object-contain rounded-[24px]"
           />
-          <div className="absolute bottom-4 left-4 rounded-lg bg-white/92 px-3 py-2 text-sm font-black text-sika-text shadow-soft">
-            Ready for counter sales
+          <div className="absolute bottom-5 left-5 rounded-lg border border-white/16 bg-[#070806]/82 px-4 py-3 text-sm font-black uppercase text-white shadow-soft backdrop-blur">
+            Counter sales, ready
           </div>
         </div>
       </div>

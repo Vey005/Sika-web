@@ -11,7 +11,7 @@ const cards = [
 
 function CustomerDebt() {
   return (
-    <section className="section-padding bg-sika-bg">
+    <section className="section-padding bg-[#f7f1e4]">
       <div className="container-page grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -19,8 +19,8 @@ function CustomerDebt() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Debt and loyalty</p>
-          <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
+          <p className="editorial-kicker">05 / Customer memory</p>
+          <h2 className="mt-5 text-[34px] font-black leading-[0.96] text-sika-text md:text-[62px]">
             Replace Credit Notebooks with a Digital Debt Ledger
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-sika-textSoft">
@@ -34,7 +34,7 @@ function CustomerDebt() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.4, delay: index * 0.04 }}
-                className="rounded-lg border border-sika-border bg-white p-5 shadow-sm"
+                className="paper-panel rounded-[22px] p-5 transition hover:-translate-y-1 hover:shadow-soft"
               >
                 <Icon size={22} className="text-sika-gold" />
                 <h3 className="mt-4 text-base font-black text-sika-text">{title}</h3>
@@ -48,14 +48,14 @@ function CustomerDebt() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.6 }}
-          className="rounded-lg border border-sika-border bg-white p-6 shadow-premium"
+          className="rounded-[30px] border border-sika-text/10 bg-[#070806] p-6 text-white shadow-premium"
         >
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <p className="text-xs font-black uppercase text-sika-muted">Customer ledger</p>
-              <h3 className="mt-1 text-2xl font-black text-sika-text">Credit clarity</h3>
+              <p className="text-xs font-black uppercase text-white/45">Customer ledger</p>
+              <h3 className="mt-1 text-3xl font-black text-white">Credit clarity</h3>
             </div>
-            <span className="rounded-full bg-sika-goldSoft px-3 py-1 text-xs font-black text-sika-goldDark">
+            <span className="rounded-full bg-sika-gold/14 px-3 py-1 text-xs font-black text-sika-gold">
               GH₵ 2,840 open
             </span>
           </div>
@@ -65,10 +65,10 @@ function CustomerDebt() {
               { name: "Kwame Owusu", amount: "GH₵ 180.00", status: "Partial paid", tone: "gold" },
               { name: "Nana Yeboah", amount: "GH₵ 0.00", status: "Cleared", tone: "success" },
             ].map((row) => (
-              <div key={row.name} className="grid grid-cols-[1fr_auto] gap-3 rounded-lg border border-sika-border bg-sika-bg p-4">
+              <div key={row.name} className="grid grid-cols-[1fr_auto] gap-3 rounded-lg border border-white/10 bg-white/7 p-4">
                 <div>
-                  <p className="font-black text-sika-text">{row.name}</p>
-                  <p className="mt-1 text-sm font-bold text-sika-textSoft">{row.amount}</p>
+                  <p className="font-black text-white">{row.name}</p>
+                  <p className="mt-1 text-sm font-bold text-white/58">{row.amount}</p>
                 </div>
                 <span
                   className={

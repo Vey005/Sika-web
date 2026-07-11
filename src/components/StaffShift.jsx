@@ -2,12 +2,10 @@ import { motion } from "framer-motion";
 import { Clock3, ShieldCheck, UserCheck } from "lucide-react";
 
 const features = [
-  "PIN-protected cashier login",
-  "Shift clock-in and clock-out",
-  "Exit safeguard when closing the app",
-  "Attendance logs",
-  "Live heartbeat every 5 minutes",
-  "Role-based permissions",
+  "PIN-protected cashier logins",
+  "Shift clock-in & clock-out logs",
+  "App exit close safeguards",
+  "Role-based staff permissions",
 ];
 
 function StaffShift() {
@@ -84,12 +82,12 @@ function StaffShift() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Staff and shifts</p>
+          <p className="text-sm font-black uppercase text-sika-goldDark">06 / Staff command</p>
           <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
             Control Cashier Access and Shift Activity
           </h2>
           <p className="mt-5 text-lg leading-8 text-sika-textSoft">
-            Every cashier uses a secure PIN. Sika POS helps owners know who is working, when they started, and whether they properly closed their shift.
+            Set secure cashier PINs. Monitor active cashiers, check clock-in times, and review shift reports.
           </p>
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             {features.map((feature) => (

@@ -18,12 +18,12 @@ function TaxCompliance() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Ghana tax compliance</p>
+          <p className="text-sm font-black uppercase text-sika-goldDark">03 / Compliance layer</p>
           <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
             Built for Ghanaian Tax and Receipt Requirements
           </h2>
           <p className="mt-5 text-lg leading-8 text-sika-textSoft">
-            Sika POS helps businesses calculate local levies correctly and print receipts in a format customers understand.
+            Calculate local levies accurately and print standardized thermal receipts for customers.
           </p>
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
             {[

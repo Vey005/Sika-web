@@ -35,12 +35,12 @@ function FeatureGrid() {
           transition={{ duration: 0.55 }}
           className="mx-auto max-w-3xl text-center"
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Core POS toolkit</p>
+          <p className="text-sm font-black uppercase text-sika-goldDark">01 / Our edge</p>
           <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
             Everything your shop needs, without the clutter
           </h2>
           <p className="mt-4 text-lg leading-8 text-sika-textSoft">
-            Sika POS keeps the cashier screen fast while giving owners the controls that protect stock, cash flow, and customer records.
+            Sika POS keeps checkout fast while giving owners control over stock, cash flow, and customers.
           </p>
         </motion.div>
 

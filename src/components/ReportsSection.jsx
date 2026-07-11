@@ -22,12 +22,12 @@ function ReportsSection() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <p className="text-sm font-black uppercase text-sika-goldDark">Reports and receipts</p>
+          <p className="text-sm font-black uppercase text-sika-goldDark">09 / Decision layer</p>
           <h2 className="mt-3 text-[30px] font-black leading-tight text-sika-text md:text-[38px]">
             Clear Reports for Better Business Decisions
           </h2>
           <p className="mt-5 text-lg leading-8 text-sika-textSoft">
-            Sika POS gives owners useful reports on sales, profit, product movement, debts, payments, restocking, and cashier performance.
+            Access instant summaries of sales, profit margin, product movement, cash flow, and cashier shifts.
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
             {reportTypes.map((type) => (
@@ -45,11 +45,11 @@ function ReportsSection() {
           transition={{ duration: 0.6 }}
           className="grid gap-4 sm:grid-cols-[0.95fr_1.05fr]"
         >
-          <div className="overflow-hidden rounded-[28px] border border-sika-border bg-sika-cream p-2 shadow-premium">
+          <div className="overflow-hidden rounded-[28px] border border-sika-border bg-sika-cream p-2 shadow-premium flex items-center justify-center">
             <img
               src={posPayment}
               alt="Sika POS payment and receipt reporting screen"
-              className="h-full min-h-80 w-full rounded-[22px] object-cover"
+              className="w-full h-auto object-contain rounded-[22px]"
             />
           </div>
           <div className="rounded-lg border border-sika-border bg-white p-6 shadow-premium">
