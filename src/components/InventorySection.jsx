@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, PackageCheck, Printer } from "lucide-react";
 import inventoryDashboard from "../assets/images/inventory-dashboard.png";
+import inventoryDashboardWebp from "../assets/images/inventory-dashboard.webp";
 
 const items = [
   "Pack & piece unit conversions",
@@ -45,11 +46,17 @@ function InventorySection() {
         >
           <div className="absolute -inset-4 rounded-[34px] bg-gradient-to-br from-sika-success/12 via-sika-gold/10 to-sika-danger/10 blur-2xl" aria-hidden="true" />
           <div className="relative rounded-[30px] border border-sika-text/10 bg-[#070806] p-3 shadow-premium">
-            <img
-              src={inventoryDashboard}
-              alt="Inventory dashboard with stock levels, low stock alerts, and product movement"
-              className="w-full h-auto object-contain rounded-[22px]"
-            />
+            <picture>
+              <source srcSet={inventoryDashboardWebp} type="image/webp" />
+              <img
+                src={inventoryDashboard}
+                alt="Inventory dashboard with stock levels, low stock alerts, and product movement"
+                className="w-full h-auto object-contain rounded-[22px]"
+                decoding="async"
+                loading="lazy"
+                sizes="(min-width: 1024px) 55vw, 100vw"
+              />
+            </picture>
             <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 sm:gap-3">
               {[
                 { label: "In Stock", value: "1,532", icon: PackageCheck, className: "text-sika-success bg-sika-successSoft" },

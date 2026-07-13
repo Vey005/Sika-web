@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Database, Gauge, ReceiptText, WifiOff } from "lucide-react";
 import checkoutScreen from "../assets/images/checkout-screen.png";
+import checkoutScreenWebp from "../assets/images/checkout-screen.webp";
 
 const bullets = [
   "Local database for instant sales",
@@ -22,11 +23,17 @@ function OfflineCheckout() {
         >
           <div className="absolute -inset-4 rounded-[34px] bg-sika-gold/18 blur-2xl" aria-hidden="true" />
           <div className="relative overflow-hidden rounded-[30px] border border-sika-text/10 bg-white p-3 shadow-premium">
-            <img
-              src={checkoutScreen}
-              alt="Offline-first checkout screen with product search, cart, and receipt controls"
-              className="w-full h-auto object-contain rounded-[22px]"
-            />
+            <picture>
+              <source srcSet={checkoutScreenWebp} type="image/webp" />
+              <img
+                src={checkoutScreen}
+                alt="Offline-first checkout screen with product search, cart, and receipt controls"
+                className="w-full h-auto object-contain rounded-[22px]"
+                decoding="async"
+                loading="lazy"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
+            </picture>
             <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 sm:gap-3">
               {[
                 { label: "Search", value: "0.1s", icon: Gauge },

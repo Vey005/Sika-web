@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { BarChart3, Download, ReceiptText } from "lucide-react";
 import posPayment from "../assets/images/pos-payment.png";
+import posPaymentWebp from "../assets/images/pos-payment.webp";
 
 const reportTypes = [
   "Daily Sales Summary",
@@ -46,11 +47,17 @@ function ReportsSection() {
           className="grid gap-4 sm:grid-cols-[0.95fr_1.05fr]"
         >
           <div className="overflow-hidden rounded-[28px] border border-sika-border bg-sika-cream p-2 shadow-premium flex items-center justify-center">
-            <img
-              src={posPayment}
-              alt="Sika POS payment and receipt reporting screen"
-              className="w-full h-auto object-contain rounded-[22px]"
-            />
+            <picture>
+              <source srcSet={posPaymentWebp} type="image/webp" />
+              <img
+                src={posPayment}
+                alt="Sika POS payment and receipt reporting screen"
+                className="w-full h-auto object-contain rounded-[22px]"
+                decoding="async"
+                loading="lazy"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
+            </picture>
           </div>
           <div className="rounded-lg border border-sika-border bg-white p-6 shadow-premium">
             <div className="mb-6 flex items-center justify-between">

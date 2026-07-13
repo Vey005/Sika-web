@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { FileText, Printer, ReceiptText, ScanBarcode } from "lucide-react";
 import cashierCounter from "../assets/images/cashier-counter.png";
+import cashierCounterWebp from "../assets/images/cashier-counter.webp";
 
 const hardware = [
   {
@@ -48,11 +49,17 @@ function HardwareSection() {
             transition={{ duration: 0.55, delay: 0.08 }}
             className="overflow-hidden rounded-[30px] border border-sika-text/10 bg-[#070806] p-2 shadow-premium"
           >
-            <img
-              src={cashierCounter}
-              alt="Point-of-sale hardware counter with barcode scanner, receipt printer, and POS screen"
-              className="w-full h-auto object-contain rounded-[24px]"
-            />
+            <picture>
+              <source srcSet={cashierCounterWebp} type="image/webp" />
+              <img
+                src={cashierCounter}
+                alt="Point-of-sale hardware counter with barcode scanner, receipt printer, and POS screen"
+                className="w-full h-auto object-contain rounded-[24px]"
+                decoding="async"
+                loading="lazy"
+                sizes="(min-width: 1024px) 55vw, 100vw"
+              />
+            </picture>
           </motion.div>
         </div>
 

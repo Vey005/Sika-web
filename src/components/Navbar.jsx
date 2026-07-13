@@ -14,7 +14,17 @@ const navItems = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const { downloadUrl, filename } = useLatestDownloadUrl();
+  const {
+    downloadUrl,
+    filename,
+    isLoading: isDownloadLoading,
+    isReady: isDownloadReady,
+  } = useLatestDownloadUrl();
+  const downloadLabel = isDownloadLoading
+    ? "Checking Installer"
+    : isDownloadReady
+      ? "Download for Windows"
+      : "Contact for Installer";
 
   return (
     <nav className={`fixed inset-x-4 top-4 z-50 mx-auto max-w-7xl px-5 transition-all duration-300 md:px-8 ${
@@ -34,7 +44,7 @@ function Navbar() {
         </a>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden items-center gap-1 xl:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => (
             <a
               key={item.label}
@@ -47,17 +57,18 @@ function Navbar() {
         </div>
 
         {/* Action Buttons (Login removed!) */}
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <a
-            href={downloadUrl}
-            download={filename}
+            href={isDownloadReady ? downloadUrl : isDownloadLoading ? undefined : "#contact"}
+            download={isDownloadReady && filename ? filename : undefined}
             className="rounded-full px-5 py-2.5 text-sm font-bold text-sika-textSoft hover:text-sika-gold hover:bg-sika-goldSoft/10 transition-all duration-200 focus-ring"
+            aria-disabled={!isDownloadReady}
           >
-            Download App
+            {downloadLabel}
           </a>
           <a
             href="#pricing"
-            className="gold-gradient rounded-full px-6 py-2.5 text-sm font-extrabold text-white shadow-soft hover:shadow-lift hover:scale-[1.02] transition-all duration-200 focus-ring"
+            className="gold-gradient rounded-full px-6 py-2.5 text-sm font-extrabold text-[#070806] shadow-soft hover:shadow-lift hover:scale-[1.02] transition-all duration-200 focus-ring"
           >
             Book Demo
           </a>
@@ -69,7 +80,7 @@ function Navbar() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-sika-border bg-white text-sika-text shadow-sm hover:bg-sika-cream transition-colors focus-ring xl:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-sika-border bg-white text-sika-text shadow-sm hover:bg-sika-cream transition-colors focus-ring lg:hidden"
         >
           {open ? <X size={18} /> : <Menu size={18} />}
         </button>
@@ -77,7 +88,7 @@ function Navbar() {
 
       {/* Mobile Menu (Login removed!) */}
       {open && (
-        <div className="mt-2 border-t border-sika-border/60 py-4 xl:hidden">
+        <div className="mt-2 border-t border-sika-border/60 py-4 lg:hidden">
           <div className="flex flex-col gap-1">
             {navItems.map((item) => (
               <a
@@ -91,17 +102,18 @@ function Navbar() {
             ))}
             <div className="mt-4 flex flex-col gap-2 border-t border-sika-border/40 pt-3">
               <a
-                href={downloadUrl}
-                download={filename}
+                href={isDownloadReady ? downloadUrl : isDownloadLoading ? undefined : "#contact"}
+                download={isDownloadReady && filename ? filename : undefined}
                 onClick={() => setOpen(false)}
                 className="rounded-full border border-sika-border bg-white py-3 text-center text-sm font-bold text-sika-text hover:bg-sika-cream transition-colors focus-ring"
+                aria-disabled={!isDownloadReady}
               >
-                Download App
+                {downloadLabel}
               </a>
               <a
                 href="#pricing"
                 onClick={() => setOpen(false)}
-                className="gold-gradient rounded-full py-3 text-center text-sm font-bold text-white shadow-soft hover:shadow-lift transition-all focus-ring"
+                className="gold-gradient rounded-full py-3 text-center text-sm font-bold text-[#070806] shadow-soft hover:shadow-lift transition-all focus-ring"
               >
                 Book Demo
               </a>

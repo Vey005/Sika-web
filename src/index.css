@@ -58,7 +58,7 @@ img {
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #9d7010, #d8a11d 58%, #f3d37a);
+  background: linear-gradient(135deg, #d8a11d, #f3d37a 58%, #fff0b8);
 }
 
 .card-premium {
@@ -499,5 +499,32 @@ img {
 
   .container-page {
     width: min(100% - 28px, 1180px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .ticker-track,
+  .hero-flow__mesh path,
+  .hero-flow__ring,
+  .hero-flow__core::before {
+    animation: none !important;
+  }
+
+  .hero-flow__scan,
+  .hero-flow__particle {
+    display: none;
   }
 }

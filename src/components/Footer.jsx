@@ -10,7 +10,7 @@ const columns = [
       { label: "Inventory", href: "#inventory" },
       { label: "Cloud Portal", href: "#cloud" },
       { label: "Hardware", href: "#hardware" },
-      { label: "Download App", href: "#", download: true },
+      { label: "Download for Windows", href: "#", download: true },
     ],
   },
   {
@@ -40,7 +40,17 @@ const columns = [
 ];
 
 function Footer() {
-  const { downloadUrl, filename } = useLatestDownloadUrl();
+  const {
+    downloadUrl,
+    filename,
+    isLoading: isDownloadLoading,
+    isReady: isDownloadReady,
+  } = useLatestDownloadUrl();
+  const downloadLabel = isDownloadLoading
+    ? "Checking Installer"
+    : isDownloadReady
+      ? "Download for Windows"
+      : "Contact for Installer";
 
   return (
     <footer className="section-rule-dark bg-[#070806] text-white">
@@ -67,11 +77,12 @@ function Footer() {
                   {column.links.map((link) => (
                     <li key={link.label}>
                       <a
-                        href={link.download ? downloadUrl : link.href}
-                        download={link.download ? filename : undefined}
+                        href={link.download ? (isDownloadReady ? downloadUrl : isDownloadLoading ? undefined : "#contact") : link.href}
+                        download={link.download && isDownloadReady && filename ? filename : undefined}
                         className="text-sm font-bold text-white/56 transition hover:text-sika-gold focus-ring"
+                        aria-disabled={link.download && !isDownloadReady}
                       >
-                        {link.label}
+                        {link.download ? downloadLabel : link.label}
                       </a>
                     </li>
                   ))}

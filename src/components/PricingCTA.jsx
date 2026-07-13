@@ -1,58 +1,106 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Download, Mail, MapPin, Phone } from "lucide-react";
+import { AlertCircle, CheckCircle2, Download, Mail, MapPin, Phone } from "lucide-react";
 import { useLatestDownloadUrl } from "../hooks/useLatestDownloadUrl";
 
-// Google Sheet Apps Script Web App URL config
-const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || "https://script.google.com/macros/s/AKfycbxNii-w2e8_jhFiifNcIO5GjbSdHxgjh3FG2k4Mw2nuobk-zvVtvd5S83Nt7EXS8tb0/exec";
+const DEMO_REQUEST_URL =
+  import.meta.env.VITE_DEMO_REQUEST_ENDPOINT || import.meta.env.VITE_GOOGLE_SHEET_URL || "";
 
 const plans = [
   {
     title: "Starter Shop",
     description: "For small retail shops and mini-marts.",
+    price: "GH\u20B5 299",
+    billing: "/ month",
+    setup: "One-time setup from GH\u20B5 600",
     points: ["Fast checkout", "Receipts", "Basic inventory"],
   },
   {
     title: "Growing Business",
     description: "For businesses that need inventory, debt tracking, and reports.",
+    price: "GH\u20B5 499",
+    billing: "/ month",
+    setup: "One-time setup from GH\u20B5 900",
     points: ["Supplier records", "Debt ledger", "Daily reports"],
   },
   {
     title: "Multi-Branch",
     description: "For owners managing multiple shops from one dashboard.",
+    price: "GH\u20B5 899",
+    billing: "/ month",
+    setup: "+ GH\u20B5 150 per extra branch",
     points: ["Branch comparison", "Cloud portal", "Remote permissions"],
   },
 ];
 
+const isAcceptedLeadResponse = (payload) =>
+  payload?.ok === true || payload?.success === true || payload?.status === "success";
+
 function PricingCTA() {
-  const { downloadUrl, filename } = useLatestDownloadUrl();
+  const {
+    downloadUrl,
+    filename,
+    isLoading: isDownloadLoading,
+    isReady: isDownloadReady,
+    isUnavailable: isDownloadUnavailable,
+    error: downloadError,
+  } = useLatestDownloadUrl();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [business, setBusiness] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [formStatus, setFormStatus] = useState("idle");
+  const [formError, setFormError] = useState("");
 
-  const handleSubmit = (e) => {
+  const downloadLabel = isDownloadLoading
+    ? "Checking installer..."
+    : isDownloadReady
+      ? "Download for Windows"
+      : "Contact for installer";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
 
-    // Send to Google Sheets (if configured)
-    if (GOOGLE_SHEET_URL) {
+    if (!DEMO_REQUEST_URL) {
+      setFormError("Demo requests are not configured yet. Please call or WhatsApp us directly.");
+      setFormStatus("error");
+      return;
+    }
+
+    setFormStatus("submitting");
+
+    try {
       const data = new URLSearchParams();
-      data.append("Name", name);
-      data.append("Phone", phone);
-      data.append("Business", business);
-      data.append("Timestamp", new Date().toLocaleString());
+      data.append("Name", name.trim());
+      data.append("Phone", phone.trim());
+      data.append("Business", business.trim());
+      data.append("Source", "Sika POS website");
+      data.append("Timestamp", new Date().toISOString());
 
-      fetch(GOOGLE_SHEET_URL, {
+      const response = await fetch(DEMO_REQUEST_URL, {
         method: "POST",
-        mode: "no-cors",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
         body: data.toString(),
-      }).catch((err) => console.error("Error submitting to Google Sheet:", err));
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !isAcceptedLeadResponse(result)) {
+        throw new Error(result?.message || "Your request was not confirmed by the server.");
+      }
+
+      setFormStatus("success");
+      setSubmitted(true);
+    } catch (error) {
+      setFormStatus("error");
+      setFormError(
+        error?.message ||
+          "We could not confirm your demo request. Please call or WhatsApp us directly."
+      );
     }
-    
-    setSubmitted(true);
   };
 
   return (
@@ -91,6 +139,11 @@ function PricingCTA() {
               </p>
               <h3 className="text-xl font-black text-sika-text">{plan.title}</h3>
               <p className="mt-3 min-h-14 text-sm leading-6 text-sika-textSoft">{plan.description}</p>
+              <div className="mt-5 flex items-end gap-1">
+                <span className="text-3xl font-black leading-none text-sika-text">{plan.price}</span>
+                <span className="pb-1 text-sm font-bold text-sika-muted">{plan.billing}</span>
+              </div>
+              <p className="mt-2 text-xs font-black uppercase text-sika-goldDark">{plan.setup}</p>
               <div className="mt-6 space-y-3">
                 {plan.points.map((point) => (
                   <div key={point} className="flex items-center gap-3 text-sm font-bold text-sika-textSoft">
@@ -121,12 +174,13 @@ function PricingCTA() {
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <a
-                  href={downloadUrl}
-                  download={filename}
+                  href={isDownloadReady ? downloadUrl : isDownloadLoading ? undefined : "#contact"}
+                  download={isDownloadReady && filename ? filename : undefined}
                   className="gold-gradient inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-base font-black text-[#070806] shadow-soft focus-ring"
+                  aria-disabled={!isDownloadReady}
                 >
                   <Download size={18} />
-                  Download Installer
+                  {downloadLabel}
                 </a>
                 <a
                   href="#contact"
@@ -138,6 +192,12 @@ function PricingCTA() {
                   Free 14-day trial
                 </span>
               </div>
+              {isDownloadUnavailable && (
+                <p className="mt-3 flex items-start gap-2 text-sm font-bold leading-6 text-white/72" role="status">
+                  <AlertCircle size={17} className="mt-0.5 shrink-0 text-sika-gold" />
+                  {downloadError || "Installer lookup is temporarily unavailable."}
+                </p>
+              )}
             </div>
 
             {submitted ? (
@@ -155,6 +215,8 @@ function PricingCTA() {
                     setName("");
                     setPhone("");
                     setBusiness("");
+                    setFormStatus("idle");
+                    setFormError("");
                   }}
                   className="mt-6 text-xs font-black uppercase tracking-wider text-sika-gold hover:underline"
                 >
@@ -167,6 +229,12 @@ function PricingCTA() {
                 <p className="mt-2 text-sm leading-6 text-white/72">
                   We'll call you back, show you Sika POS over video or visit your shop, and help you get set up.
                 </p>
+                {formError && (
+                  <div className="mt-4 flex items-start gap-2 rounded-md border border-sika-danger/30 bg-sika-danger/12 p-3 text-sm font-bold leading-6 text-white" role="alert">
+                    <AlertCircle size={17} className="mt-0.5 shrink-0 text-sika-danger" />
+                    <span>{formError}</span>
+                  </div>
+                )}
                 <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label htmlFor="contact-name" className="block text-xs font-black uppercase tracking-wider text-white/60">
@@ -212,11 +280,17 @@ function PricingCTA() {
                   </div>
                   <button
                     type="submit"
-                    className="gold-gradient w-full rounded-md py-3.5 text-center text-sm font-black text-[#070806] shadow-soft transition hover:shadow-lift focus-ring"
+                    disabled={formStatus === "submitting" || !DEMO_REQUEST_URL}
+                    className="gold-gradient w-full rounded-md py-3.5 text-center text-sm font-black text-[#070806] shadow-soft transition hover:shadow-lift focus-ring disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Send Demo Request
+                    {formStatus === "submitting" ? "Sending Request..." : "Send Demo Request"}
                   </button>
                 </form>
+                {!DEMO_REQUEST_URL && (
+                  <p className="mt-3 text-xs font-bold leading-5 text-white/58">
+                    Demo form endpoint missing. Use the phone, WhatsApp, or email options below.
+                  </p>
+                )}
               </div>
             )}
           </div>

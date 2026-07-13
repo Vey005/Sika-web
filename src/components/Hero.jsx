@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   CircleDollarSign,
@@ -13,8 +13,10 @@ import {
   WifiOff,
 } from "lucide-react";
 import heroPos from "../assets/images/hero-pos.png";
+import heroPosWebp from "../assets/images/hero-pos.webp";
 import logoTransparent from "../assets/images/logo-transparent.png";
 import posPayment from "../assets/images/pos-payment.png";
+import posPaymentWebp from "../assets/images/pos-payment.webp";
 import { useLatestDownloadUrl } from "../hooks/useLatestDownloadUrl";
 
 const badges = [
@@ -112,7 +114,7 @@ const flowNodes = [
   },
 ];
 
-function FlowNode({ label, icon: Icon, className, index, onHoverStart, onHoverEnd, style }) {
+function FlowNode({ label, icon: Icon, className, index, onHoverStart, onHoverEnd, style, reduceMotion }) {
   const duration = 2.8 + (index % 3) * 0.7;
   const delay = (index % 4) * 0.4;
   const floatY = 5 + (index % 2) * 4;
@@ -121,17 +123,25 @@ function FlowNode({ label, icon: Icon, className, index, onHoverStart, onHoverEn
     <motion.div
       style={style}
       className={`absolute z-10 flex items-center gap-1.5 rounded-full border border-sika-border/50 bg-white/92 px-2 py-1 text-[9px] font-black uppercase text-sika-textSoft shadow-soft backdrop-blur-md pointer-events-auto md:gap-2 md:px-3 md:py-2 md:text-xs ${className}`}
-      animate={{ y: [0, -floatY, 0], opacity: [0.85, 1, 0.85] }}
-      transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
+      animate={reduceMotion ? { y: 0, opacity: 1 } : { y: [0, -floatY, 0], opacity: [0.85, 1, 0.85] }}
+      transition={reduceMotion ? { duration: 0 } : { duration, repeat: Infinity, ease: "easeInOut", delay }}
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
-      whileHover={{
-        scale: 1.06,
-        y: -floatY - 3,
-        borderColor: "rgba(216, 161, 29, 0.45)",
-        backgroundColor: "#ffffff",
-        color: "#111827"
-      }}
+      whileHover={
+        reduceMotion
+          ? {
+              borderColor: "rgba(216, 161, 29, 0.45)",
+              backgroundColor: "#ffffff",
+              color: "#111827",
+            }
+          : {
+              scale: 1.06,
+              y: -floatY - 3,
+              borderColor: "rgba(216, 161, 29, 0.45)",
+              backgroundColor: "#ffffff",
+              color: "#111827",
+            }
+      }
     >
       <Icon size={15} className="text-sika-gold" />
       {label}
@@ -141,12 +151,13 @@ function FlowNode({ label, icon: Icon, className, index, onHoverStart, onHoverEn
 
 function HeroFlowAnimation() {
   const [hoveredNode, setHoveredNode] = useState(null);
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={reduceMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2 }}
+      transition={{ duration: reduceMotion ? 0 : 1.2 }}
       className="hero-flow relative w-full h-full overflow-hidden"
       aria-label="Animated Sika POS sales, stock, payments, receipt, and cloud flow"
     >
@@ -207,34 +218,39 @@ function HeroFlowAnimation() {
           );
         })}
 
-        {flowNodes.map((node) => {
-          const isHighlighted = hoveredNode === node.id;
-          const isAnyHovered = hoveredNode !== null;
+        {!reduceMotion &&
+          flowNodes.map((node) => {
+            const isHighlighted = hoveredNode === node.id;
+            const isAnyHovered = hoveredNode !== null;
 
-          return node.particleDelays.map((delay, pIdx) => (
-            <circle
-              key={`${node.id}-particle-${pIdx}`}
-              r={isHighlighted ? 0.95 : 0.68}
-              fill={node.particleColor}
-              filter="url(#glow)"
-              opacity={isAnyHovered && !isHighlighted ? 0.32 : 1}
-              style={{ transition: "r 0.3s ease, opacity 0.3s ease" }}
-            >
-              <animateMotion
-                dur={`${isHighlighted ? node.duration * 0.65 : node.duration}s`}
-                repeatCount="indefinite"
-                path={node.path}
-                begin={delay}
-              />
-            </circle>
-          ));
-        })}
+            return node.particleDelays.map((delay, pIdx) => (
+              <circle
+                key={`${node.id}-particle-${pIdx}`}
+                r={isHighlighted ? 0.95 : 0.68}
+                fill={node.particleColor}
+                filter="url(#glow)"
+                opacity={isAnyHovered && !isHighlighted ? 0.32 : 1}
+                style={{ transition: "r 0.3s ease, opacity 0.3s ease" }}
+              >
+                <animateMotion
+                  dur={`${isHighlighted ? node.duration * 0.65 : node.duration}s`}
+                  repeatCount="indefinite"
+                  path={node.path}
+                  begin={delay}
+                />
+              </circle>
+            ));
+          })}
       </svg>
 
-      <div className="hero-flow__scan" aria-hidden="true" />
-      <div className="hero-flow__particle hero-flow__particle--one" aria-hidden="true" />
-      <div className="hero-flow__particle hero-flow__particle--two" aria-hidden="true" />
-      <div className="hero-flow__particle hero-flow__particle--three" aria-hidden="true" />
+      {!reduceMotion && (
+        <>
+          <div className="hero-flow__scan" aria-hidden="true" />
+          <div className="hero-flow__particle hero-flow__particle--one" aria-hidden="true" />
+          <div className="hero-flow__particle hero-flow__particle--two" aria-hidden="true" />
+          <div className="hero-flow__particle hero-flow__particle--three" aria-hidden="true" />
+        </>
+      )}
 
       {flowNodes.map((node, idx) => (
         <FlowNode
@@ -244,6 +260,7 @@ function HeroFlowAnimation() {
           icon={node.icon}
           className={node.className}
           style={node.style}
+          reduceMotion={reduceMotion}
           onHoverStart={() => setHoveredNode(node.id)}
           onHoverEnd={() => setHoveredNode(null)}
         />
@@ -252,25 +269,29 @@ function HeroFlowAnimation() {
       <motion.div
         style={{ x: "-50%", y: "-50%" }}
         className="hero-flow__core absolute left-1/2 top-1/2 z-20 flex h-36 w-36 items-center justify-center rounded-full border border-sika-gold/45 bg-white/90 shadow-premium backdrop-blur-xl pointer-events-auto md:h-44 md:w-44"
-        animate={{
-          boxShadow: hoveredNode
-            ? [
-                "0 0 0 rgba(216,161,29,0.2)",
-                "0 0 85px rgba(216,161,29,0.58)",
-                "0 0 0 rgba(216,161,29,0.2)",
-              ]
-            : [
-                "0 0 0 rgba(216,161,29,0)",
-                "0 0 70px rgba(216,161,29,0.34)",
-                "0 0 0 rgba(216,161,29,0)",
-              ],
-          scale: hoveredNode ? 1.05 : 1,
-        }}
-        transition={{ duration: hoveredNode ? 1.6 : 3.2, repeat: Infinity, ease: "easeInOut" }}
-        whileHover={{ scale: 1.06, rotate: 2 }}
+        animate={
+          reduceMotion
+            ? { boxShadow: "0 30px 90px rgba(17, 24, 39, 0.14)", scale: 1 }
+            : {
+                boxShadow: hoveredNode
+                  ? [
+                      "0 0 0 rgba(216,161,29,0.2)",
+                      "0 0 85px rgba(216,161,29,0.58)",
+                      "0 0 0 rgba(216,161,29,0.2)",
+                    ]
+                  : [
+                      "0 0 0 rgba(216,161,29,0)",
+                      "0 0 70px rgba(216,161,29,0.34)",
+                      "0 0 0 rgba(216,161,29,0)",
+                    ],
+                scale: hoveredNode ? 1.05 : 1,
+              }
+        }
+        transition={reduceMotion ? { duration: 0 } : { duration: hoveredNode ? 1.6 : 3.2, repeat: Infinity, ease: "easeInOut" }}
+        whileHover={reduceMotion ? { scale: 1.02 } : { scale: 1.06, rotate: 2 }}
       >
-        <div className="absolute inset-2 rounded-full border border-dashed border-black/5 animate-spin" style={{ animationDuration: "25s" }} />
-        <div className="absolute inset-4 rounded-full border border-dashed border-sika-gold/20 animate-spin" style={{ animationDuration: "15s", animationDirection: "reverse" }} />
+        <div className={`absolute inset-2 rounded-full border border-dashed border-black/5 ${reduceMotion ? "" : "animate-spin"}`} style={{ animationDuration: "25s" }} />
+        <div className={`absolute inset-4 rounded-full border border-dashed border-sika-gold/20 ${reduceMotion ? "" : "animate-spin"}`} style={{ animationDuration: "15s", animationDirection: "reverse" }} />
 
         <img
           src={logoTransparent}
@@ -285,7 +306,18 @@ function HeroFlowAnimation() {
 }
 
 function Hero() {
-  const { downloadUrl, filename } = useLatestDownloadUrl();
+  const reduceMotion = useReducedMotion();
+  const {
+    downloadUrl,
+    filename,
+    isLoading: isDownloadLoading,
+    isReady: isDownloadReady,
+  } = useLatestDownloadUrl();
+  const downloadLabel = isDownloadLoading
+    ? "Checking installer..."
+    : isDownloadReady
+      ? "Download for Windows"
+      : "Contact for installer";
 
   return (
     <section id="home" className="relative overflow-hidden pb-16 text-sika-text">
@@ -316,12 +348,13 @@ function Hero() {
               className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
               <a
-                href={downloadUrl}
-                download={filename}
-                className="gold-gradient inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-base font-black text-white shadow-soft transition hover:shadow-lift focus-ring"
+                href={isDownloadReady ? downloadUrl : isDownloadLoading ? undefined : "#contact"}
+                download={isDownloadReady && filename ? filename : undefined}
+                className="gold-gradient inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-base font-black text-[#070806] shadow-soft transition hover:shadow-lift focus-ring"
+                aria-disabled={!isDownloadReady}
               >
                 <Download size={18} />
-                Download for Windows
+                {downloadLabel}
               </a>
               <a
                 href="#pricing"
@@ -371,11 +404,17 @@ function Hero() {
           >
             <div className="absolute -inset-8 rounded-[42px] bg-gradient-to-br from-sika-gold/18 via-white to-sika-success/10 blur-3xl" aria-hidden="true" />
             <div className="relative rotate-0 overflow-hidden rounded-[30px] border border-white bg-sika-cream p-3 shadow-premium lg:-rotate-2">
-              <img
-                src={heroPos}
-                alt="Sika POS checkout screen showing product cards, cart totals, and cashier controls"
-                className="w-full h-auto object-contain rounded-[22px] shadow-soft"
-              />
+              <picture>
+                <source srcSet={heroPosWebp} type="image/webp" />
+                <img
+                  src={heroPos}
+                  alt="Sika POS checkout screen showing product cards, cart totals, and cashier controls"
+                  className="w-full h-auto object-contain rounded-[22px] shadow-soft"
+                  decoding="async"
+                  fetchPriority="high"
+                  sizes="(min-width: 1024px) 52vw, 100vw"
+                />
+              </picture>
               <div className="absolute left-5 top-5 hidden rounded-full border border-sika-success/20 bg-white/94 px-4 py-2 text-sm font-black text-sika-text shadow-soft backdrop-blur md:flex md:items-center md:gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-sika-success" />
                 System Up-to-Date
@@ -383,9 +422,9 @@ function Hero() {
 
               <motion.div
                 className="absolute -left-4 bottom-7 hidden w-48 rounded-lg border border-sika-border bg-white p-3 text-sika-text shadow-premium backdrop-blur md:block z-10"
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={{ scale: 1.04, y: -10, borderColor: "rgba(216, 161, 29, 0.35)" }}
+                animate={reduceMotion ? undefined : { y: [0, -7, 0] }}
+                transition={reduceMotion ? undefined : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={reduceMotion ? { borderColor: "rgba(216, 161, 29, 0.35)" } : { scale: 1.04, y: -10, borderColor: "rgba(216, 161, 29, 0.35)" }}
               >
                 <div className="mb-2 flex items-center justify-between">
                   <span className="text-xs font-black uppercase text-sika-muted">Receipt</span>
@@ -402,16 +441,21 @@ function Hero() {
 
               <motion.div
                 className="absolute -right-3 top-8 hidden w-56 rounded-lg border border-sika-border bg-white p-3 text-sika-text shadow-premium backdrop-blur md:block z-10"
-                animate={{ y: [0, 7, 0] }}
-                transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                whileHover={{ scale: 1.04, y: 10, borderColor: "rgba(216, 161, 29, 0.35)" }}
+                animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
+                transition={reduceMotion ? undefined : { duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                whileHover={reduceMotion ? { borderColor: "rgba(216, 161, 29, 0.35)" } : { scale: 1.04, y: 10, borderColor: "rgba(216, 161, 29, 0.35)" }}
               >
                 <div className="flex items-center gap-3">
-                  <img
-                    src={posPayment}
-                    alt="Sika POS payment method panel"
-                    className="h-14 w-16 rounded-lg object-cover"
-                  />
+                  <picture>
+                    <source srcSet={posPaymentWebp} type="image/webp" />
+                    <img
+                      src={posPayment}
+                      alt="Sika POS payment method panel"
+                      className="h-14 w-16 rounded-lg object-cover"
+                      decoding="async"
+                      loading="lazy"
+                    />
+                  </picture>
                   <div>
                     <p className="text-xs font-black uppercase text-sika-muted">Payment layer</p>
                     <p className="text-sm font-black text-sika-text">Split payment ready</p>
@@ -425,9 +469,9 @@ function Hero() {
                 <motion.div
                   key={card.label}
                   className="rounded-lg border border-sika-border bg-white/96 p-3 text-sika-text shadow-soft backdrop-blur hover:border-sika-gold/30"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 4.2 + idx * 0.6, repeat: Infinity, ease: "easeInOut", delay: idx * 0.2 }}
-                  whileHover={{ scale: 1.03, y: -7 }}
+                  animate={reduceMotion ? undefined : { y: [0, -5, 0] }}
+                  transition={reduceMotion ? undefined : { duration: 4.2 + idx * 0.6, repeat: Infinity, ease: "easeInOut", delay: idx * 0.2 }}
+                  whileHover={reduceMotion ? { scale: 1.01 } : { scale: 1.03, y: -7 }}
                 >
                   <p className="text-xs font-black uppercase text-sika-muted">{card.label}</p>
                   <div className="mt-1 flex items-center justify-between gap-2">
@@ -450,9 +494,9 @@ function Hero() {
 
             <motion.div
               className="absolute -bottom-4 -right-2 hidden rounded-full border border-sika-border bg-white px-4 py-2 text-sm font-black text-sika-text shadow-soft lg:flex lg:items-center lg:gap-2 z-20"
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              whileHover={{ scale: 1.04 }}
+              animate={reduceMotion ? undefined : { y: [0, -4, 0] }}
+              transition={reduceMotion ? undefined : { duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              whileHover={reduceMotion ? { scale: 1.01 } : { scale: 1.04 }}
             >
               <WifiOff size={16} className="text-sika-gold" />
               Offline checkout active
@@ -460,9 +504,9 @@ function Hero() {
 
             <motion.div
               className="absolute -top-3 left-5 hidden rounded-full border border-sika-border bg-white/90 px-4 py-2 text-xs font-black uppercase text-sika-muted backdrop-blur lg:flex lg:items-center lg:gap-2 z-20"
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-              whileHover={{ scale: 1.04 }}
+              animate={reduceMotion ? undefined : { y: [0, 4, 0] }}
+              transition={reduceMotion ? undefined : { duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+              whileHover={reduceMotion ? { scale: 1.01 } : { scale: 1.04 }}
             >
               <ShieldCheck size={15} className="text-sika-success" />
               Secure cashier layer

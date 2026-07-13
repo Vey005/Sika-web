@@ -10,6 +10,7 @@ import {
   Utensils,
 } from "lucide-react";
 import cashierCounter from "../assets/images/cashier-counter.png";
+import cashierCounterWebp from "../assets/images/cashier-counter.webp";
 
 const businesses = [
   { label: "Retail shops", icon: Store },
@@ -51,11 +52,17 @@ function BusinessTypes() {
       </div>
       <div className="container-page pb-12">
         <div className="relative overflow-hidden rounded-[30px] border border-sika-text/10 bg-white p-2 shadow-premium">
-          <img
-            src={cashierCounter}
-            alt="Shop counter scene with a Sika POS terminal and receipt printer"
-            className="w-full h-auto object-contain rounded-[24px]"
-          />
+          <picture>
+            <source srcSet={cashierCounterWebp} type="image/webp" />
+            <img
+              src={cashierCounter}
+              alt="Shop counter scene with a Sika POS terminal and receipt printer"
+              className="w-full h-auto object-contain rounded-[24px]"
+              decoding="async"
+              loading="lazy"
+              sizes="min(100vw - 40px, 1240px)"
+            />
+          </picture>
           <div className="absolute bottom-5 left-5 rounded-lg border border-white/16 bg-[#070806]/82 px-4 py-3 text-sm font-black uppercase text-white shadow-soft backdrop-blur">
             Counter sales, ready
           </div>
